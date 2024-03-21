@@ -1,14 +1,81 @@
-<div class="flex flex-col gap-4">
-    <mat-form-field appearance="outline">
-        <mat-label for="name">Nombre de la comida</mat-label>
-        <input matInput placeholder="Ejem. Pizza" id="name" type="text" [formControl]="name">
-        @if (name.valid) {
-        <mat-error>{{showValue()}}</mat-error>
-        }
-        <mat-icon matSuffix>food</mat-icon>
-    </mat-form-field>
-    <div class="flex gap-4">
-        <button mat-flat-button color="primary" (click)="showValue()">Mostrar Valor</button>
-        <button mat-flat-button color="primary" (click)="changeValue()">Cambiar valor</button>
+<div class="max-w-5xl flex flex-col lg:flex-row gap-4 items-center">
+
+
+<form [formGroup]="form" class="w-full lg:w-1/2 p-4">
+    <h1 class="text-lg-font-bold text-slate-800 pb-4">{{edit? 'Editar Comida':'Añadir nueva Comida'}}</h1>
+    <div class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="" formControlName="name">
+
+            <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+                <span *ngIf="name?.hasError('required')" class="text-xs">Este campo es requerido</span>
+            </mat-error>
+        </mat-form-field>
     </div>
+
+    <div class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Descripción</mat-label>
+            <input matInput placeholder="Ejem. Pizza" formControlName="description">
+           
+            <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
+                <span *ngIf="description?.hasError('required')" class="text-xs">Este campo es requerido</span>
+                <span *ngIf="description?.hasError('minlength')" class="text-xs">
+                    Mínimo de caracteres requeridos es de {{ description?.getError('minlength').requiredLength }},
+                    tienes {{ description?.getError('minlength').actualLength }}
+                </span>
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>URL de la Imagen</mat-label>
+            <input matInput placeholder="" formControlName="image">
+
+            <mat-error *ngIf="image?.invalid && (image?.dirty || image?.touched)">
+                <span *ngIf="image?.hasError('required')" class="text-xs">Este campo es requerido</span>
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="category">
+                <mat-option value="bebida">Bebida</mat-option>
+                <mat-option value="comida">Comida</mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="category?.invalid && (category?.dirty || category?.touched)">
+                <span class="text-xs" *ngIf="category?.hasError('required')">Este campo es requerido</span>
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="w-full">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Precio</mat-label>
+            <input matInput placeholder="Ejem. Pizza" type="number" class="example-right-align" formControlName="price">
+            <span matTextPrefix>$&nbsp;</span>
+            <span matTextSuffix>.00</span>
+
+            <mat-error *ngIf="price?.invalid && (price?.dirty || price?.touched)">
+                <span *ngIf="price?.hasError('required')" class="text-xs">Este campo es requerido</span>
+                <span *ngIf="price?.hasError('min')" class="text-xs">
+                    El valor mínimo es de {{ price?.getError('min').min }}, el valor actual es de {{
+                    price?.getError('min').actual }}
+                </span>
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="edit? updateData():sendData()">{{edit? 'Actualizar':'Enviar'}}</button>
+    
+
+</form>
+<div class="w-full lg:w-1/2">
+    <img class="aspect-video object-contain bg-no-repeat rounded-lg"src="{{image?.value}}" alt="" srcset="">
+</div>
 </div>

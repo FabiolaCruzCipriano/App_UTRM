@@ -74,5 +74,29 @@ menu:Food[]= [
   public getAllFoods(): Food[]{
     return this.menu;
   }
+  //Obtener una comida del erreglo
+  public getOne(id:number):Food | undefined{
+    return this.menu.find(item => item.id == id);
+  }
+  //Añadir una nueva comida
+  public addFood(food:Food){
+    this.menu.push(food);
+  }
+  //Actualizar una nueva comida
+  public updateFood(newFood:Food){
+    this.menu.forEach((food,index)=>{
+      if(food.id == newFood.id){
+        this.menu[index] = newFood;
+      }
+    }) 
+  }
+  //Eliminar una comida
+  public deteleFood(deleteFood:Food){
+    this.menu.forEach((food,index)=>{
+      if (food.id == deleteFood.id){
+        this.menu.splice(index,1);
+      }
+    })
+  }
 
 }
