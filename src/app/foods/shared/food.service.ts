@@ -1,102 +1,67 @@
 import { Injectable } from '@angular/core';
 import { Food } from './food.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.development';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FoodService {
-menu:Food[]= [
-  {
-  id:1,
-  name:'pizza',
-  descripcion:'Peperoni',
-  category:'food',
-  image:'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-  price:250
 
-},
-  {
-    id: 2,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
 
-  },
-  {
-    id: 3,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
+  API_URL: string ='';
 
-  },
-  {
-    id: 4,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
+constructor(private http:HttpClient){
+  this.API_URL = `${environment.API_URL}`
+}
 
-  },
-  {
-    id: 5,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
+public getAll():Observable<Food[]>{
+  return this.http.get<Food[]>(this.API_URL+ 'food/all');
+}
 
-  },
-  {
-    id: 6,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
-
-  },
-  {
-    id: 7,
-    name: 'pizza',
-    descripcion: 'Peperoni',
-    category: 'food',
-    image: 'https://www.sortirambnens.com/wp-content/uploads/2019/02/pizza-de-peperoni.jpg',
-    price: 250
-
-  }
-]
-  constructor() {}
-  public getAllFoods(): Food[]{
-    return this.menu;
-  }
-  //Obtener una comida del erreglo
-  public getOne(id:number):Food | undefined{
-    return this.menu.find(item => item.id == id);
-  }
-  //Añadir una nueva comida
-  public addFood(food:Food){
-    this.menu.push(food);
-  }
-  //Actualizar una nueva comida
-  public updateFood(newFood:Food){
-    this.menu.forEach((food,index)=>{
-      if(food.id == newFood.id){
-        this.menu[index] = newFood;
-      }
-    }) 
-  }
-  //Eliminar una comida
-  public deteleFood(deleteFood:Food){
-    this.menu.forEach((food,index)=>{
-      if (food.id == deleteFood.id){
-        this.menu.splice(index,1);
-      }
-    })
-  }
+public addFood(food:Food):Observable<Food>{
+  return this.http.post<Food>(this.API_URL+ 'food/save',food);
 
 }
+
+public deleteFood(deleteFood:Food): Observable<unknown>{
+  return this.http.delete(this.API_URL+ 'food/delete/'+ deleteFood.id);
+}
+
+public getOneFood(id:number):Observable<Food>{
+  return this.http.get<Food>(this.API_URL+ 'food/find/'+id);
+}
+
+}
+//   constructor() {}
+//   public getAllFoods(): Food[]{
+//     return this.menu;
+//   }
+//   //Obtener una comida del erreglo
+//   public getOne(id:number):Food | undefined{
+//     return this.menu.find(item => item.id == id);
+//   }
+//   //Añadir una nueva comida
+//   public addFood(food:Food){
+//     this.menu.push(food);
+//   }
+//   //Actualizar una nueva comida
+//   public updateFood(newFood:Food){
+//     this.menu.forEach((food,index)=>{
+//       if(food.id == newFood.id){
+//         this.menu[index] = newFood;
+//       }
+//     }) 
+//   }
+//   //Eliminar una comida
+//   public deteleFood(deleteFood:Food){
+//     this.menu.forEach((food,index)=>{
+//       if (food.id == deleteFood.id){
+//         this.menu.splice(index,1);
+//       }
+//     })
+//   }
+
+// 

@@ -15,7 +15,12 @@ export class FoodListComponent implements OnInit {
 
 }
   ngOnInit(): void {
-  this.data= this.serviceFood.getAllFoods();
+    this.serviceFood.getAll().subscribe({
+     next:(value) =>(this.data = value),
+     error:(e) => console.error(e),
+     complete:() => console.info('complete'), 
+    })
+  // this.data= this.serviceFood.getAllFoods();
   console.log(this.data);
   }
 }
